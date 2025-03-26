@@ -1,0 +1,106 @@
+.animateFloat {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animateFloatSlow {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animateFloatDelay {
+  animation: float 7s ease-in-out 2s infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Enhanced transitions for horizontal scrolling */
+.horizontalScrollContainer {
+  will-change: transform;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease, box-shadow 0.5s ease;
+  opacity: 1;
+  transform-origin: center center;
+}
+
+.activeScroll {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Scroll indicator styling */
+.scrollIndicator {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.3), rgba(96, 165, 250, 0.3));
+  border-radius: 2px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 50;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+    width: 80px;
+  }
+  50% {
+    opacity: 0.8;
+    width: 120px;
+  }
+  100% {
+    opacity: 0.5;
+    width: 80px;
+  }
+}
+
+.projectCard {
+  will-change: transform, opacity, scale;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease, filter 0.5s ease;
+  transform: scale(1) translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.projectCard.activeCard {
+  z-index: 10;
+  filter: brightness(1.1);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* Add entrance animation for cards as they enter viewport */
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(30px);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Add exit animation for cards as they leave viewport */
+@keyframes cardExit {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
+}

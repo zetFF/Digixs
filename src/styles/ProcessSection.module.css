@@ -1,0 +1,68 @@
+.animateFloat {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animateFloatSlow {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animateFloatDelay {
+  animation: float 7s ease-in-out 2s infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.imageHover {
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: perspective(1000px) rotateY(0deg);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.imageHover:hover {
+  transform: perspective(1000px) rotateY(5deg) scale(1.03);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Add smooth reveal animation for timeline */
+@keyframes timelineGrow {
+  from {
+    height: 0%;
+    opacity: 0.3;
+  }
+  to {
+    height: 100%;
+    opacity: 1;
+  }
+}
+
+/* Add pulse effect for step numbers */
+@keyframes stepPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.2);
+    transform: scale(1) translateX(-50%);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+    transform: scale(1.05) translateX(-48%);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    transform: scale(1) translateX(-50%);
+  }
+}
+
+/* Apply pulse animation to active step */
+.activeStep {
+  animation: stepPulse 2s infinite;
+}

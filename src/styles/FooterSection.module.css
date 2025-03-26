@@ -1,0 +1,32 @@
+.animateFloat {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animateFloatSlow {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animateFloatDelay {
+  animation: float 7s ease-in-out 2s infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.footerLinkHover:hover {
+  background: linear-gradient(to right, rgba(168, 85, 247, 0.1), rgba(59, 130, 246, 0.1));
+}
+
+.socialIconHover:hover {
+  background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+}

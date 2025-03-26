@@ -1,0 +1,106 @@
+.animateFloat {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animateFloatSlow {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animateFloatDelay {
+  animation: float 7s ease-in-out 2s infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.testimonialCard {
+  will-change: transform, opacity;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease, filter 0.5s ease;
+  transform: scale(0.95) perspective(1000px) rotateY(0deg) translateZ(0);
+  opacity: 0.8;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.testimonialCard:hover {
+  transform: scale(1) perspective(1000px) rotateY(2deg) translateZ(10px);
+  filter: brightness(1.1);
+  opacity: 1;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+/* Add entrance animation for cards as they enter viewport */
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: perspective(1000px) rotateY(-10deg) translateY(30px);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1000px) rotateY(0deg) translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Add hover pulse animation for highlight effect */
+@keyframes cardPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.1);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(37, 99, 235, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+  }
+}
+
+/* Active testimonial card styling */
+.activeTestimonial {
+  animation: cardPulse 2s infinite;
+  z-index: 10;
+  filter: brightness(1.1);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+  transform: scale(1) perspective(1000px) rotateY(0deg) translateZ(0);
+  opacity: 1;
+}
+
+/* Card shimmer effect */
+.testimonialCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 100%);
+  transform: skewX(-25deg);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.testimonialCard:hover::before {
+  animation: shimmer 2s infinite;
+  opacity: 1;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
