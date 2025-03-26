@@ -20,9 +20,26 @@ export default function HeroSection() {
   const statsRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const orbsRef = useRef<HTMLDivElement>(null);
+  const [isHighZoom, setIsHighZoom] = useState(false);
 
   // Register ScrollTrigger plugin
   gsap.registerPlugin(ScrollTrigger);
+
+  // Detect high zoom levels (approximately 200% or higher)
+  useEffect(() => {
+    const detectZoomLevel = () => {
+      // A simple heuristic to detect high zoom levels
+      const isZoomed = window.innerWidth < 768 && window.outerWidth >= 1000;
+      setIsHighZoom(isZoomed);
+    };
+
+    // Initial check
+    detectZoomLevel();
+
+    // Check on resize
+    window.addEventListener("resize", detectZoomLevel);
+    return () => window.removeEventListener("resize", detectZoomLevel);
+  }, []);
 
   // Mouse move effect
   useEffect(() => {
@@ -156,78 +173,85 @@ export default function HeroSection() {
   };
 
   return (
-    <div className="pt-24 md:pt-32 overflow-hidden relative" ref={heroRef}>
+    <div className="pt-16 sm:pt-20 md:pt-24 lg:pt-32 overflow-hidden relative" ref={heroRef}>
       {/* Background elements */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute w-full h-full bg-[url('/mesh-grid.png')] bg-cover opacity-20 mix-blend-luminosity"></div>
 
         <div className="absolute top-20 left-0 w-full h-full">
           <div ref={orbsRef} className="relative w-full h-full">
-            <div className={`${styles.orb} ${styles.animateFloatSlow} absolute w-72 h-72 rounded-full bg-gradient-to-b from-purple-600/20 to-transparent -left-32 top-40 blur-3xl`}></div>
-            <div className={`${styles.orb} ${styles.animateFloat} absolute w-72 h-72 rounded-full bg-gradient-to-b from-blue-600/20 to-transparent right-0 top-60 blur-3xl`}></div>
-            <div className={`${styles.orb} ${styles.animateFloatDelay} absolute w-72 h-72 rounded-full bg-gradient-to-b from-pink-600/20 to-transparent left-1/3 bottom-20 blur-3xl`}></div>
+            <div
+              className={`${styles.orb} ${styles.animateFloatSlow} absolute w-60 sm:w-72 h-60 sm:h-72 rounded-full bg-gradient-to-b from-purple-600/20 to-transparent -left-32 top-40 blur-3xl`}></div>
+            <div className={`${styles.orb} ${styles.animateFloat} absolute w-60 sm:w-72 h-60 sm:h-72 rounded-full bg-gradient-to-b from-blue-600/20 to-transparent right-0 top-60 blur-3xl`}></div>
+            <div
+              className={`${styles.orb} ${styles.animateFloatDelay} absolute w-60 sm:w-72 h-60 sm:h-72 rounded-full bg-gradient-to-b from-pink-600/20 to-transparent left-1/3 bottom-20 blur-3xl`}></div>
           </div>
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto">
+      <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Hero Split Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-24">
+        <div className={`grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center mb-16 sm:mb-20 lg:mb-24 ${isHighZoom ? "lg:grid-cols-1" : ""}`}>
           {/* Text content */}
-          <div className="lg:col-span-6 space-y-8" ref={textRef}>
-            <div className="badge inline-block px-4 py-2 bg-gradient-to-r from-purple-500/10 to-purple-500/20 backdrop-blur-sm rounded-full border border-purple-500/20">
+          <div className={`lg:col-span-6 space-y-6 sm:space-y-8 text-center md:text-center lg:text-left ${isHighZoom ? "text-center mx-auto" : ""}`} ref={textRef}>
+            <div className="badge inline-block px-4 py-2 bg-gradient-to-r from-purple-500/10 to-purple-500/20 backdrop-blur-sm rounded-full border border-purple-500/20 mx-auto lg:mx-0">
               <p className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-blue-300 text-xs font-medium tracking-widest uppercase">Digital Marketing Agency</p>
             </div>
 
-            <div className="space-y-4">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none">
+            <div className="space-y-3 sm:space-y-4">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none mx-auto lg:mx-0">
                 <span className="title-part block text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">Elevate Your</span>
                 <span className="title-part block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400">Digital Presence</span>
               </h1>
-              <p className="text-base md:text-base text-white max-w-xl leading-relaxed">
+              <p className="text-sm sm:text-base text-white leading-relaxed max-w-md sm:max-w-lg mx-auto lg:mx-0">
                 We craft exceptional digital experiences that convert visitors into loyal customers. Our data-driven approach ensures measurable results that grow your business.
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-4">
-              <Button className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-7 py-5 rounded-xl text-base font-medium hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300 hover:-translate-y-1">
+            <div className="flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start">
+              <Button className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-5 sm:px-7 py-4 sm:py-5 rounded-xl text-sm sm:text-base font-medium hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300 hover:-translate-y-1">
                 Get Started
               </Button>
-              <Button variant="outline" className="bg-white/5 border-white/10 text-white px-7 py-5 rounded-xl text-base font-medium hover:bg-white/10 hover:text-white transition-all duration-300">
+              <Button
+                variant="outline"
+                className="bg-white/5 border-white/10 text-white px-5 sm:px-7 py-4 sm:py-5 rounded-xl text-sm sm:text-base font-medium hover:bg-white/10 hover:text-white transition-all duration-300">
                 View Our Work
               </Button>
             </div>
 
-            {/* Floating badges */}
-            <div className="hidden lg:block relative w-full">
-              <Badge variant="outline" className={`${styles.animateFloat} absolute -right-4 top-10 bg-black/30 backdrop-blur-lg border border-white/10 py-2 px-4 shadow-xl flex items-center gap-2`}>
-                <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                <span className="text-xs text-white">AI-Powered Insights</span>
-              </Badge>
-            </div>
+            {/* Floating badges - hide at high zoom and on mobile/tablets */}
+            {!isHighZoom && (
+              <div className="hidden lg:block relative w-full">
+                <Badge variant="outline" className={`${styles.animateFloat} absolute -right-4 top-10 bg-black/30 backdrop-blur-lg border border-white/10 py-2 px-4 shadow-xl flex items-center gap-2`}>
+                  <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                  <span className="text-xs text-white">AI-Powered Insights</span>
+                </Badge>
+              </div>
+            )}
           </div>
 
-          {/* Mockup images */}
-          <div className="lg:col-span-6 relative h-[400px] md:h-[450px] lg:h-[500px]" ref={imageRef}>
-            {/* Mockup image 1 */}
-            <div className="mockup absolute top-[5%] left-[5%] w-[45%] h-auto aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl transform -rotate-6 hover:-rotate-3 transition-all duration-500">
+          {/* Mockup images - hide at specific breakpoints */}
+          <div className={`lg:col-span-6 relative h-[300px] sm:h-[350px] md:h-[450px] lg:h-[500px] hidden md:block lg:block ${isHighZoom ? "md:hidden" : ""}`} ref={imageRef}>
+            {/* Mockup image 1 - improved positioning */}
+            <div className="mockup absolute top-[5%] left-[5%] w-[40%] sm:w-[45%] h-auto aspect-[4/3] rounded-lg sm:rounded-2xl overflow-hidden shadow-2xl transform -rotate-6 hover:-rotate-3 transition-all duration-500">
               <Image src="/wa1.jpg" alt="Mobile Application" fill className="object-cover" />
             </div>
 
             {/* Mockup image 2 */}
-            <div className="mockup absolute top-[20%] right-[5%] w-[55%] h-auto aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl transform rotate-6 hover:rotate-3 transition-all duration-500">
+            <div className="mockup absolute top-[15%] sm:top-[20%] right-[5%] w-[50%] sm:w-[55%] h-auto aspect-[16/10] rounded-lg sm:rounded-2xl overflow-hidden shadow-2xl transform rotate-6 hover:rotate-3 transition-all duration-500">
               <Image src="/wa2.jpg" alt="Dashboard Interface" fill className="object-cover" />
             </div>
 
             {/* Mockup image 3 */}
-            <div className="mockup absolute bottom-[5%] left-[15%] w-[65%] h-auto aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl transform rotate-3 hover:rotate-0 transition-all duration-500">
+            <div className="mockup absolute bottom-[5%] left-[10%] sm:left-[15%] w-[60%] sm:w-[65%] h-auto aspect-[16/9] rounded-lg sm:rounded-2xl overflow-hidden shadow-2xl transform rotate-3 hover:rotate-0 transition-all duration-500">
               <Image src="/wa3.jpg" alt="Analytics Dashboard" fill className="object-cover" />
             </div>
 
             {/* Floating stats card */}
-            <div className={`${styles.animateFloatSlow} mockup absolute bottom-[15%] right-[10%] p-4 bg-black/60 backdrop-blur-md rounded-xl border border-white/10 shadow-xl`}>
+            <div
+              className={`${styles.animateFloatSlow} mockup absolute bottom-[15%] right-[5%] sm:right-[10%] p-3 sm:p-4 bg-black/60 backdrop-blur-md rounded-lg sm:rounded-xl border border-white/10 shadow-xl`}>
               <div className="text-xs text-gray-400 uppercase tracking-widest mb-1">Conversion Rate</div>
-              <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400">+143%</div>
+              <div className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400">+143%</div>
               <div className="w-full h-1.5 bg-gray-700 rounded-full mt-2 overflow-hidden">
                 <div className="h-full w-[75%] bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></div>
               </div>
@@ -235,17 +259,29 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Stats section */}
+        {/* Smaller image display for small screens - visible only on small screens */}
+        <div className="md:hidden mb-16 sm:mb-20 relative h-[250px] sm:h-[300px]">
+          <div className="mockup absolute top-[5%] left-[5%] w-[40%] h-auto aspect-[4/3] rounded-lg overflow-hidden shadow-2xl transform -rotate-6">
+            <Image src="/wa1.jpg" alt="Mobile Application" fill className="object-cover" />
+          </div>
+          <div className="mockup absolute top-[15%] right-[5%] w-[45%] h-auto aspect-[16/10] rounded-lg overflow-hidden shadow-2xl transform rotate-6">
+            <Image src="/wa2.jpg" alt="Dashboard Interface" fill className="object-cover" />
+          </div>
+        </div>
+
+        {/* Stats section - improved responsiveness */}
         <div
           ref={statsRef}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 p-6 md:p-8 bg-gradient-to-r from-purple-900/10 to-blue-900/10 backdrop-blur-md rounded-xl border border-white/10 mb-24">
+          className={`grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 p-5 sm:p-6 md:p-8 bg-gradient-to-r from-purple-900/10 to-blue-900/10 backdrop-blur-md rounded-xl border border-white/10 mb-16 sm:mb-20 lg:mb-24 ${
+            isHighZoom ? "md:grid-cols-2 text-center" : ""
+          }`}>
           {[
             { value: "10+", label: "Years Experience", icon: "crown" },
             { value: "200+", label: "Projects Completed", icon: "check" },
             { value: "95%", label: "Client Satisfaction", icon: "star" },
             { value: "24/7", label: "Support", icon: "clock" },
           ].map((stat, index) => (
-            <div key={index} className="stat-item flex gap-3 items-center">
+            <div key={index} className="stat-item flex gap-3 items-center py-3 xs:py-1">
               <div
                 className={cn(
                   "w-12 h-12 rounded-lg flex items-center justify-center",
@@ -285,19 +321,21 @@ export default function HeroSection() {
           ))}
         </div>
 
-        {/* Services Section */}
-        <div className="mb-24">
-          <div className="text-center mb-16">
+        {/* Services Section - improved responsiveness */}
+        <div className="mb-16 sm:mb-20 lg:mb-24">
+          <div className="text-center mb-10 sm:mb-16">
             <div className="inline-block px-4 py-2 bg-gradient-to-r from-purple-500/10 to-purple-500/20 backdrop-blur-sm rounded-full border border-purple-500/20 mb-5">
               <p className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-blue-300 text-xs font-medium tracking-widest uppercase">Our Services</p>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-5 text-balance bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">Comprehensive Digital Solutions</h2>
-            <p className="text-sm md:text-base text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-5 text-balance bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
+              Comprehensive Digital Solutions
+            </h2>
+            <p className="text-xs sm:text-sm md:text-base text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
               From strategy development to creative execution and technical implementation, we provide end-to-end solutions to elevate your digital presence.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 ${isHighZoom ? "lg:grid-cols-1 md:grid-cols-1 sm:grid-cols-1" : ""}`}>
             {[
               {
                 title: "Strategy",
